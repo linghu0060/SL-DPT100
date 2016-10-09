@@ -31,3 +31,14 @@
 # Debug files
 *.dSYM/
 *.su
+
+
+/Soft_MCU/Output
+/Soft_MCU/RTE/Network/Net_Config_HTTP_Server.h.0000
+/Soft_MCU/RTE/Network/Net_Debug.c.0000
+/Soft_MCU/RTE/Device/STM32F407IGHx/RTE_Device.h~RF34c9ea92.TMP
+/Soft_MCU/Auto_FcArm_Cmd_inp.Bak
+/__Back
+/_PCB/Project Outputs for SL-DPT100
+/_PCB/Project Logs for SL-DPT100
+/__资料
