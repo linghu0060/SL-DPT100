@@ -1,0 +1,13 @@
+[System]
+Password = sanlian       ;
+
+[Ethernet]
+DHCP     = Y             ;
+IPADDR   = 192.168.0.99  ;
+DefGW    = 192.168.0.1   ;
+MASK     = 255.255.255.0 ;
+MACADDR  = UNDEF         ;"1E-30-AA-BB-CC-DD" or "UNDEF"
+
+[ProfiBUS]
+BAUD     = 187500        ;
+

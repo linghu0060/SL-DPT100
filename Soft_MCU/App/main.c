@@ -15,14 +15,17 @@
 ***      2015/7/24 -- Linghu -- the first version
 ***********************************************************************************************************/
 
+#include    <stdlib.h>
 #include    <stdint.h>
 #include    <stdio.h>
 #include    <string.h>
+#include    <assert.h>
 
 #include    "cmsis_os.h"                /* CMSIS RTOS definitions             */
 #include    "rl_net.h"                  /* Network definitions                */
 #include    "rl_fs.h"                   /* FileSystem definitions             */
 
+#include    "cfg.h"
 #include    "board.h"
 #include    "net_user.h"
 #include    "netiod.h"
@@ -91,13 +94,15 @@ static uint32_t     g_statistic[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 int main(void)
 {
     osThreadSetPriority(osThreadGetId(), osPriorityBelowNormal);
-    board_init();       osDelay(10);                /* Board Initialize                                 */
-    fs_init("F0:");     osDelay(10);                /* File System Initialize: NOR or SPI Flash drive 0 */
-    fs_init("M0:");     osDelay(10);                /* File System Initialize: Memory Card drive 0      */
-    fs_init("N0:");     osDelay(10);                /* File System Initialize: NAND Flash drive 0       */
-    PBDP_Init("");      osDelay(10);                /* PorfiBUS_DP Initialize                           */
-    net_init("");       osDelay(10);                /* Net Initialize                                   */
-    netiod_init();      osDelay(10);                /* NetIO Server Initialize                          */
+    board_init();                   osDelay(10);    /* Board Initialize                                 */
+    fs_init("F0:");                 osDelay(10);    /* File System Initialize: NOR or SPI Flash drive 0 */
+    fs_init("M0:");                 osDelay(10);    /* File System Initialize: Memory Card drive 0      */
+    fs_init("N0:");                 osDelay(10);    /* File System Initialize: NAND Flash drive 0       */
+    cfg_init("config.sys");         osDelay(10);
+    PBDP_Init(cfg_get_baudrate());  osDelay(10);    /* PorfiBUS_DP Initialize                           */
+    net_init();                     osDelay(10);    /* Net Initialize                                   */
+    netiod_init();                  osDelay(10);    /* NetIO Server Initialize                          */
+
     if( osThreadCreate(osThread(thread_net2dp), NULL) == NULL ) {
         printf("[Main] Initialize Failed!\r\n");    /* Create thread of Net to ProfiBUS_DP              */
     }

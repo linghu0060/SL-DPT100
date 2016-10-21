@@ -25,6 +25,7 @@
 #include    "rl_net.h"                  /* Network definitions                */
 #include    "rl_net_lib.h"
 
+#include    "cfg.h"
 #include    "crc.h"
 #include    "net_user.h"
 
@@ -33,30 +34,6 @@
 *** @{
 *** @addtogroup NET_USER_Pravate
 *** @{
-*** @addtogroup                 NET_USER_Private_Constants
-*** @{
-***********************************************************************************************************/
-
-
-
-/**********************************************************************************************************/
-/** @}
-*** @addtogroup                 NET_USER_Private_Macros
-*** @{
-***********************************************************************************************************/
-
-
-
-/**********************************************************************************************************/
-/** @}
-*** @addtogroup                 NET_USER_Private_Types
-*** @{
-***********************************************************************************************************/
-
-
-
-/**********************************************************************************************************/
-/** @}
 *** @addtogroup                 NET_USER_Private_Variables
 *** @{
 ***********************************************************************************************************/
@@ -69,37 +46,43 @@ static uint8_t      g_LinkStatus;                   /* ETH Link status: (0)LinkD
 
 /**********************************************************************************************************/
 /** @}
-*** @addtogroup                 NET_USER_Private_Prototypes
-*** @{
-***********************************************************************************************************/
-
-
-
-/**********************************************************************************************************/
-/** @}
 *** @addtogroup                 NET_USER_Private_Functions
 *** @{
 ***********************************************************************************************************/
+/** @brief      Net Initialize of user
+***
+*** @param[in]  config  [0]---System Password.\n
+***                     [1]---DHCP enable or disable.\n
+***                     [2]---IP address.\n
+***                     [3]---Default Gateway Address.\n
+***                     [4]---Local Subnet mask.\n
+***                     [5]---Ethernet MAC Address.\n
+***********************************************************************************************************/
 
-void net_init(const char* config)
+void net_init(void)
 {
-    char    buff[20];
-    uint32  unique_id;
-
-    (void)config;
+    const char* cfg;
+    char        buff[20];
+    uint32      unique_id;
 
     if( (g_osTimerId = osTimerCreate(osTimer(Timer), osTimerOnce, NULL)) == NULL ) {
         printf("[ETH] Initialize Timer Failed!\r\n");
         return;
     }
 
-    unique_id = crc32_pkzip(CRC32_PKZIP_INIT, (const void*)0x1FFF7A10, 12) ^ CRC32_PKZIP_XOROUT;
-    sprintf( buff, "1E-31-%02X-%02X-%02X-%02X", (unsigned)(unique_id >> 24) & 0xFF
-                                              , (unsigned)(unique_id >> 16) & 0xFF
-                                              , (unsigned)(unique_id >> 8)  & 0xFF
-                                              , (unsigned)(unique_id >> 0)  & 0xFF
-           );
-    eth_macaddr_set(buff);
+    cfg = cfg_get_macaddr();                /* Config of Ethernet MAC Address       */
+    if( (cfg != NULL) && (strcasecmp(cfg, "UNDEF") != 0) ) {
+        eth_macaddr_set(cfg);
+    }
+    else {
+        unique_id = crc32_pkzip(CRC32_PKZIP_INIT, (const void*)0x1FFF7A10, 12) ^ CRC32_PKZIP_XOROUT;
+        sprintf( buff, "1E-31-%02X-%02X-%02X-%02X", (unsigned)(unique_id >> 24) & 0xFF
+                                                  , (unsigned)(unique_id >> 16) & 0xFF
+                                                  , (unsigned)(unique_id >> 8)  & 0xFF
+                                                  , (unsigned)(unique_id >> 0)  & 0xFF
+               );
+        eth_macaddr_set(buff);
+    }
 
     if( netOK != net_initialize() ) {
         printf("[ETH] Initialize Failed!\r\n");
@@ -107,17 +90,36 @@ void net_init(const char* config)
     }
     NVIC_SetPriority(ETH_IRQn, 4);
 
+    if( !cfg_get_dhcp() ) {                     /* Config of DHCP enable or disable     */
+        eth_dhcp_disable();
+    }
+    if( NULL != (cfg = cfg_get_ipaddr()) ) {    /* Config of IP address                 */
+        net_ipaddr_set(cfg);
+    }
+    if( NULL != (cfg = cfg_get_defgw()) ) {     /* Config of Default Gateway Address    */
+        net_defgw_set(cfg);
+    }
+    if( NULL != (cfg = cfg_get_mask()) ) {      /* Config of Local Subnet mask          */
+        net_mask_set(cfg);
+    }
+    if( NULL != (cfg = cfg_get_password()) ) {  /* Config of System password            */
+        net_psw_set(cfg);
+    }
+
     eth_macaddr_get(buff); // eth_dhcp_disable();
     printf("[ETH] Initialize Succeed!\r\n[ETH]     MAC addr: %s\r\n", buff);
+
     if( eth_dhcp_status() ) {
         printf("[ETH]     DHCP is Enable.\r\n");
     }
     else {
         printf("[ETH]     DHCP is Disable.\r\n");
         net_ipaddr_get(buff);
-        printf("[ETH]     IP Address: %s\r\n", buff);
+        printf("[ETH]     IP Address:      %s\r\n", buff);
         net_defgw_get(buff);
         printf("[ETH]     Default Gateway: %s\r\n", buff);
+        net_mask_get(buff);
+        printf("[ETH]     Subnet Mask:     %s\r\n", buff);
     }
     net_psw_get(buff);
     printf("[ETH]     Web&Ftp User: admin, PSW: %s\r\n", buff);
@@ -273,8 +275,9 @@ int net_psw_get(char psw_out[20])
     extern FTP_CFG   ftp_config;    // Net_Config.c
 
     if( http_config.EnAuth && ftp_config.EnAuth ) {
-        strncpy(ftp_config.Passw, http_config.Passw, NET_PASSWORD_SIZE);
-        strncpy(psw_out, http_config.Passw, 20);
+      //memcpy(ftp_config.Passw, http_config.Passw, NET_PASSWORD_SIZE);
+        strncpy(psw_out, http_config.Passw, 20 - 1);
+        psw_out[20 - 1] = '\0';
         return( 0 );
     }
     else {
@@ -288,8 +291,9 @@ int net_psw_set(const char* psw_in)
     extern FTP_CFG   ftp_config;    // Net_Config.c
 
     if( http_config.EnAuth && ftp_config.EnAuth ) {
-        strncpy(http_config.Passw, psw_in, NET_PASSWORD_SIZE);
-        strncpy(ftp_config.Passw,  psw_in, NET_PASSWORD_SIZE);
+        strncpy(http_config.Passw, psw_in, NET_PASSWORD_SIZE - 1);
+        http_config.Passw[NET_PASSWORD_SIZE - 1] = '\0';
+        memcpy(ftp_config.Passw, http_config.Passw, NET_PASSWORD_SIZE);
     }
 
     return( 0 );
@@ -316,6 +320,8 @@ void dhcp_client_notify(uint32_t if_num, dhcpClientOption opt, const uint8_t *va
             printf("[ETH] DHCP set IP address: %s\r\n", ip4_ntoa(val));
             net_defgw_get(buff);
             printf("[ETH]     Default Gateway: %s\r\n", buff);
+            net_mask_get(buff);
+            printf("[ETH]     Subnet Mask:     %s\r\n", buff);
         }
         break;
 //  case dhcpClientNTPservers:

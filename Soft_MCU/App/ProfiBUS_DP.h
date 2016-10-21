@@ -40,7 +40,7 @@ extern  "C"
 
 /* ProfiBUS DP User function */
 extern int  PBDP_Statc(char* buff, int size);
-extern void PBDP_Init(const char* config);
+extern void PBDP_Init(uint32_t baud);
 extern int  PBDP_Recv(uint8_t buff[260]);
 extern int  PBDP_Send(const uint8_t *buff, int len);
 

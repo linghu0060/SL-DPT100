@@ -46,7 +46,7 @@
 
 //     <s.15>Authentication Password
 //     <i>Default: ""
-#define FTP_SERVER_AUTH_PASS    "sanlian123"
+#define FTP_SERVER_AUTH_PASS    "sanlian"
 //   </e>
 
 // </h>

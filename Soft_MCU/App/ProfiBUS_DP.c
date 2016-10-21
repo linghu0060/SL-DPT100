@@ -218,10 +218,8 @@ int PBDP_Statc(char* buff, int size)
 *** @param[in]  config  A pointer of band rate.
 ***********************************************************************************************************/
 
-void PBDP_Init(const char* config)
+void PBDP_Init(uint32_t baud)
 {
-    (void)config;
-
     PBDP_Info.idl_cnt = 0;      /* PBDP Information Initialize  */
     PBDP_Info.tx_sig  = NULL;
     PBDP_Info.tx_mut  = osMutexCreate(osMutex(PBDP_tx_mut));
@@ -244,8 +242,8 @@ void PBDP_Init(const char* config)
         printf("[ProfiBUS DP] Initialize Failed!\r\n");
     }
 
-    PBDP_UART_Init(1500000);     /* UART Initialize              */
-    printf("[ProfiBUS DP] Initialize Succeed! Baud rate: 1.5Mbps.\r\n");
+    PBDP_UART_Init(baud);       /* UART Initialize              */
+    printf("[ProfiBUS DP] Initialize Succeed! Baud rate: %u.\r\n", baud);
 }
 
 
