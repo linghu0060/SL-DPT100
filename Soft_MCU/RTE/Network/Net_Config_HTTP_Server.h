@@ -36,7 +36,7 @@
 
 //     <s.20>Authentication Realm
 //     <i>Default: "Embedded WEB Server"
-#define HTTP_SERVER_AUTH_REALM      "Embedded WEB Server"
+#define HTTP_SERVER_AUTH_REALM      "SL-DPT100"
 
 //     <s.15>Authentication Username
 //     <i>Default: "admin"

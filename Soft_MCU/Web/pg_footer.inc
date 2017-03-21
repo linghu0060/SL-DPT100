@@ -1,14 +1,13 @@
-       </td>
-      </tr></tbody></table>
-     </font></center>
+            </td></tr></tbody>
+            </table>
+          </font></center>
+        </div>
+        </td></tr>
+        <tr><td colspan="5" style="background-color:rgb(214,226,242); text-align:center; font-size:60%" height="40">
+          <a href="http://www.sl-automation.com/copyright.asp">Copyright</a> ? 2014-2016
+          <a href="http://www.sl-automation.com/">ÎäººÈýÁª×Ô¶¯»¯ÓÐÏÞÔðÈÎ¹«Ë¾</a> All rights reserved.
+        </td></tr>
+      </tbody>
+    </table>
     </div>
-   </td>
-  </tr><tr>
-  <td colSpan=5 height=20 width="805" background="llblue.jpg" style="background-repeat: repeat-y;">
-   <p align=center><font face="Verdana" size="1"><a href="http://www.keil.com/company/copyright.asp">
-    Copyright</a> © 2004-2014 <a href="http://www.keil.com/company/">KEIL - An ARM Company</a> 
-    All rights reserved.</font></p>
-  </td>
- </tr></tbody></table>
-</div></body>
-</html>
+    </body>

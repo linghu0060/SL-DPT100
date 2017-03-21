@@ -15,13 +15,13 @@
 //   <o>Number of BSD Sockets <1-20>
 //   <i>Number of available Berkeley Sockets
 //   <i>Default: 2
-#define BSD_NUM_SOCKS           8
+#define BSD_NUM_SOCKS           4
 
 //   <o>Number of Streaming Server Sockets <0-20>
 //   <i>Defines a number of Streaming (TCP) Server sockets,
 //   <i>that listen for an incoming connection from the client.
 //   <i>Default: 1
-#define BSD_SERVER_SOCKS        4
+#define BSD_SERVER_SOCKS        2
 
 //   <o>Receive Timeout in seconds <0-600>
 //   <i>A timeout for socket receive in blocking mode.

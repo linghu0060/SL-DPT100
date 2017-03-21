@@ -43,8 +43,9 @@ typedef struct {
 } MY_BUF;
 #define MYBUF(p)        ((MY_BUF *)p)
 
+
 // Process query string received by GET request.
-void cgi_process_query (const char *qstr) {
+__weak void cgi_process_query (const char *qstr) {
   char var[40];
 
   do {
@@ -76,6 +77,8 @@ void cgi_process_query (const char *qstr) {
     }
   } while (qstr);
 }
+
+
 
 // Process data received by POST request.
 // Type code: - 0 = www-url-encoded form data.
@@ -160,8 +163,9 @@ void cgi_process_data (uint8_t code, const char *data, uint32_t len) {
   LED_SetOut (P2);
 }
 
+/*
 // Generate dynamic web data from a script line.
-uint32_t cgi_script (const char *env, char *buf, uint32_t buflen, uint32_t *pcgi) {
+__weak uint32_t cgi_script (const char *env, char *buf, uint32_t buflen, uint32_t *pcgi) {
   TCP_INFO *tsoc;
   const char *lang;
   uint32_t len = 0;
@@ -323,3 +327,4 @@ uint32_t cgi_script (const char *env, char *buf, uint32_t buflen, uint32_t *pcgi
   }
   return (len);
 }
+*/

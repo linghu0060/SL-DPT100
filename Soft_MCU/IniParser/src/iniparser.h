@@ -4,8 +4,8 @@
    @file    iniparser.h
    @author  N. Devillard
    @brief   Parser for ini files. \
-            Define INI_ASCIILINESZ to set maximum line length. \
-            Define INI_DICTMINSZ   to set minimal allocated number of entries
+            Define INI_ASCIILINESZ to set maximum line length(default 1024). \
+            Define INI_DICTMINSZ   to set minimal allocated number of entries(default 128).
 */
 /*--------------------------------------------------------------------------*/
 

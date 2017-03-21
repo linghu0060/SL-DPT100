@@ -44,3 +44,10 @@
 /Soft_MCU/RTE/Network/Net_Debug.c.0000
 /Soft_MCU/RTE/Device/STM32F407IGHx/RTE_Device.h~RF34c9ea92.TMP
 /Soft_MCU/Auto_FcArm_Cmd_inp.Bak
+/Soft_MCU/JLinkLog.txt
+/_PCB/*.SchDocPreview
+/_PCB/*.PcbDocPreview
+*.uvguix.User
+*.SchDocPreview
+*.PcbDocPreview
+*.SchDocPreview

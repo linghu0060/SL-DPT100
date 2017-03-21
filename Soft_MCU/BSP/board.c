@@ -53,12 +53,41 @@ void board_init(void)
     MODIFY_REG(GPIOA->PUPDR,   (0x3u << 2*(8))                  /* PA8 No pull-up, pull-down               */
                            ,   (0x0u << 2*(8)));
 
+    MODIFY_REG(RCC->AHB1ENR,   0                                /* Enable GPIOD clock                       */
+                           ,   RCC_AHB1ENR_GPIODEN);
+    MODIFY_REG(GPIOD->MODER,   (0x3u << 2*(8))                  /* PD8 Input mode                           */
+                           ,   (0x0u << 2*(8)));
+    MODIFY_REG(GPIOD->PUPDR,   (0x3u << 2*(8))                  /* PD8 pull-up                              */
+                           ,   (0x1u << 2*(8)));
+
   //stdio_init();       // Init StdIO of Compiler retarget_io
     HAL_Init();         // Init STM32 HAL drivers
     stdio_init();       // Init StdIO of Compiler retarget_io
 
     printf("\r\n[Board] Syetme start...\r\n");
     printf("[Board] System Clock Configed. System Core Clock: %luHz\r\n", (unsigned long)HAL_RCC_GetHCLKFreq());
+}
+
+
+/**********************************************************************************************************/
+/** @brief      Reset default setting key status
+***********************************************************************************************************/
+
+int bsp_clear_key(void)
+{
+    int i;
+
+    if( !READ_BIT(GPIOD->IDR, (0x1u << 8)) )
+    {
+        for(i = 0;  !READ_BIT(GPIOD->IDR, (0x1u << 8));  i++)
+        {
+            osDelay(10);
+            if( ++i > 300 ) {
+                return( 1 );
+            }
+        }
+    }
+    return( 0 );
 }
 
 

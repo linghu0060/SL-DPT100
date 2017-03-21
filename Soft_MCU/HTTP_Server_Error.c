@@ -17,8 +17,8 @@ HTTP_ERROR http_error = {
  
   // HTTP Error page footer
   "<hr><br>"
-  "<i>Keil Embedded WEB Server V2.00, 2013<br>"
-  "<a href=http://www.keil.com>www.keil.com</a>"
+  "<i>Embedded WEB Server, 2015<br>"
+  "<a href=www.github.com>www.github.com</a>"
   " - Embedded Development Tools</i>"
   "</body>",
  

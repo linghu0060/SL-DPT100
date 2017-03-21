@@ -20,9 +20,9 @@
 #include    <stdio.h>
 #include    <string.h>
 
-#include    "stm32f4xx.h"
-#include    "cmsis_os.h"                /* CMSIS RTOS definitions             */
-#include    "rl_net.h"                  /* Network definitions                */
+#include    "stm32f4xx.h"               /* Use for "NVIC_SetPriority(ETH_IRQn, 4)"  */
+#include    "cmsis_os.h"                /* CMSIS RTOS definitions                   */
+#include    "rl_net.h"                  /* Network definitions                      */
 #include    "rl_net_lib.h"
 
 #include    "cfg.h"
@@ -106,23 +106,18 @@ void net_init(void)
         net_psw_set(cfg);
     }
 
-    eth_macaddr_get(buff); // eth_dhcp_disable();
-    printf("[ETH] Initialize Succeed!\r\n[ETH]     MAC addr: %s\r\n", buff);
+    printf("[ETH] Initialize Succeed!\r\n[ETH]     MAC addr: %s\r\n", eth_macaddr_get());
 
     if( eth_dhcp_status() ) {
         printf("[ETH]     DHCP is Enable.\r\n");
     }
     else {
         printf("[ETH]     DHCP is Disable.\r\n");
-        net_ipaddr_get(buff);
-        printf("[ETH]     IP Address:      %s\r\n", buff);
-        net_defgw_get(buff);
-        printf("[ETH]     Default Gateway: %s\r\n", buff);
-        net_mask_get(buff);
-        printf("[ETH]     Subnet Mask:     %s\r\n", buff);
+        printf("[ETH]     IP Address:      %s\r\n", net_ipaddr_get());
+        printf("[ETH]     Default Gateway: %s\r\n", net_defgw_get());
+        printf("[ETH]     Subnet Mask:     %s\r\n", net_mask_get());
     }
-    net_psw_get(buff);
-    printf("[ETH]     Web&Ftp User: admin, PSW: %s\r\n", buff);
+    printf("[ETH]     Web&Ftp User: admin, PSW: %s\r\n", net_psw_get());
 
     return;
 }
@@ -161,11 +156,10 @@ void eth_dhcp_disable(void)
     }
 }
 
-int eth_macaddr_get(char mac_out[18])
+const char* eth_macaddr_get(void)
 {
     extern ETH_CFG  eth0_config;    // net_config.h
-    strcpy(mac_out, mac_ntoa(eth0_config.MacAddr));
-    return( 0 );
+    return( mac_ntoa(eth0_config.MacAddr) );
 }
 
 int eth_macaddr_set(const char* mac_in)
@@ -192,11 +186,10 @@ uint32_t net_ipaddr_local(void)
     return( ((uint32_t*)(localm[NETIF_ETH].IpAddr))[0] );
 }
 
-int net_ipaddr_get(char ip_out[12])
+const char* net_ipaddr_get(void)
 {
     extern LOCALM   localm[];       // net_sys.c
-    strcpy(ip_out, ip4_ntoa(localm[NETIF_ETH].IpAddr));
-    return( 0 );
+    return( ip4_ntoa(localm[NETIF_ETH].IpAddr) );
 }
 
 int net_ipaddr_set(const char* ip_in)
@@ -211,11 +204,10 @@ uint32_t net_defgw_local(void)
     return( ((uint32_t*)(localm[NETIF_ETH].DefGW))[0] );
 }
 
-int net_defgw_get(char ip_out[12])
+const char* net_defgw_get(void)
 {
     extern LOCALM   localm[];       // net_sys.c
-    strcpy(ip_out, ip4_ntoa(localm[NETIF_ETH].DefGW));
-    return( 0 );
+    return( ip4_ntoa(localm[NETIF_ETH].DefGW) );
 }
 
 int net_defgw_set(const char* ip_in)
@@ -230,11 +222,10 @@ uint32_t net_mask_local(void)
     return( ((uint32_t*)(localm[NETIF_ETH].NetMask))[0] );
 }
 
-int net_mask_get(char ip_out[12])
+const char* net_mask_get(void)
 {
     extern LOCALM   localm[];       // net_sys.c
-    strcpy(ip_out, ip4_ntoa(localm[NETIF_ETH].NetMask));
-    return( 0 );
+    return( ip4_ntoa(localm[NETIF_ETH].NetMask) );
 }
 
 int net_mask_set(const char* ip_in)
@@ -243,11 +234,10 @@ int net_mask_set(const char* ip_in)
     return( !ip4_aton(ip_in, localm[NETIF_ETH].NetMask) );
 }
 
-int net_pridns_get(char ip_out[12])
+const char* net_pridns_get(void)
 {
     extern LOCALM   localm[];       // net_sys.c
-    strcpy(ip_out, ip4_ntoa(localm[NETIF_ETH].PriDNS));
-    return( 0 );
+    return( ip4_ntoa(localm[NETIF_ETH].PriDNS) );
 }
 
 int net_pridns_set(const char* ip_in)
@@ -256,11 +246,10 @@ int net_pridns_set(const char* ip_in)
     return( !ip4_aton(ip_in, localm[NETIF_ETH].PriDNS) );
 }
 
-int net_secdns_get(char ip_out[12])
+const char* net_secdns_get(void)
 {
     extern LOCALM   localm[];       // net_sys.c
-    strcpy(ip_out, ip4_ntoa(localm[NETIF_ETH].SecDNS));
-    return( 0 );
+    return( ip4_ntoa(localm[NETIF_ETH].SecDNS) );
 }
 
 int net_secdns_set(const char* ip_in)
@@ -269,19 +258,17 @@ int net_secdns_set(const char* ip_in)
     return( !ip4_aton(ip_in, localm[NETIF_ETH].SecDNS) );
 }
 
-int net_psw_get(char psw_out[20])
+const char* net_psw_get(void)
 {
     extern HTTP_CFG  http_config;   // Net_Config.c
     extern FTP_CFG   ftp_config;    // Net_Config.c
 
     if( http_config.EnAuth && ftp_config.EnAuth ) {
       //memcpy(ftp_config.Passw, http_config.Passw, NET_PASSWORD_SIZE);
-        strncpy(psw_out, http_config.Passw, 20 - 1);
-        psw_out[20 - 1] = '\0';
-        return( 0 );
+        return( http_config.Passw );
     }
     else {
-        return( 1 );
+        return( NULL );
     }
 }
 
@@ -311,17 +298,14 @@ int net_psw_set(const char* psw_in)
 
 void dhcp_client_notify(uint32_t if_num, dhcpClientOption opt, const uint8_t *val, uint32_t len)
 {
-    char    buff[12];
     (void)if_num;  (void)len;
 
     switch( opt ) {
     case dhcpClientIPaddress:       // IP address has changed
         if( eth_dhcp_en ) {
             printf("[ETH] DHCP set IP address: %s\r\n", ip4_ntoa(val));
-            net_defgw_get(buff);
-            printf("[ETH]     Default Gateway: %s\r\n", buff);
-            net_mask_get(buff);
-            printf("[ETH]     Subnet Mask:     %s\r\n", buff);
+            printf("[ETH]     Default Gateway: %s\r\n", net_defgw_get());
+            printf("[ETH]     Subnet Mask:     %s\r\n", net_mask_get());
         }
         break;
 //  case dhcpClientNTPservers:
@@ -375,10 +359,8 @@ void eth_link_notify(uint32_t if_num, ethLinkEvent event)
     }
 }
 
-
 /*****************************  END OF FILE  **************************************************************/
 /** @}
 *** @}
 *** @}
 ***********************************************************************************************************/
-

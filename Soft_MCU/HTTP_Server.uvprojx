@@ -349,7 +349,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -367,7 +367,7 @@
             <v6LangP>0</v6LangP>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>nNDEBUG  DEBUG  _DEBUG  __DEBUG        MINI_STM32F429   STM32F407xx    HSE_VALUE=25000000    USE_FULL_ASSERT    USE_HAL_DRIVER    __RTX    _RTE_</Define>
+              <Define>NDEBUG  nDEBUG  _nDEBUG  __nDEBUG        INI_ASCIILINESZ=127  INI_DICTMINSZ=16        MINI_STM32F429   STM32F407xx    HSE_VALUE=25000000    USE_FULL_ASSERT    USE_HAL_DRIVER    __RTX    _RTE_</Define>
               <Undefine></Undefine>
               <IncludePath>.\IniParser\src;.\Web;.\BSP</IncludePath>
             </VariousControls>
@@ -428,6 +428,11 @@
               <FilePath>.\App\net_user.c</FilePath>
             </File>
             <File>
+              <FileName>net_http_cgi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\net_http_cgi.c</FilePath>
+            </File>
+            <File>
               <FileName>cfg.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\App\cfg.c</FilePath>
@@ -448,14 +453,14 @@
           <GroupName>IniParser</GroupName>
           <Files>
             <File>
-              <FileName>dictionary.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\IniParser\src\dictionary.c</FilePath>
-            </File>
-            <File>
               <FileName>iniparser.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\IniParser\src\iniparser.c</FilePath>
+            </File>
+            <File>
+              <FileName>dictionary.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\IniParser\src\dictionary.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -662,6 +667,51 @@
               <FileName>HTTP_Server_CGI.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\HTTP_Server_CGI.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>HTTP_Server_Error.c</FileName>
@@ -929,6 +979,68 @@
         </Group>
         <Group>
           <GroupName>::Board Support</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>0</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>2</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -1050,19 +1162,19 @@
       <component Cbundle="MCBSTM32F400" Cclass="Board Support" Cgroup="A/D Converter" Cvendor="Keil" Cversion="2.0.0" condition="STM32F4 HAL GPIO ADC">
         <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="2.4.0"/>
         <targetInfos>
-          <targetInfo name="MCBSTM32F400 V1.1"/>
+          <targetInfo excluded="1" name="MCBSTM32F400 V1.1"/>
         </targetInfos>
       </component>
       <component Cbundle="MCBSTM32F400" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="2.0.0" condition="STM32F4 HAL GPIO">
         <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="2.4.0"/>
         <targetInfos>
-          <targetInfo name="MCBSTM32F400 V1.1"/>
+          <targetInfo excluded="1" name="MCBSTM32F400 V1.1"/>
         </targetInfos>
       </component>
       <component Cbundle="MCBSTM32F400" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="2.0.0" condition="STM32F4 HAL GPIO">
         <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="2.4.0"/>
         <targetInfos>
-          <targetInfo name="MCBSTM32F400 V1.1"/>
+          <targetInfo excluded="1" name="MCBSTM32F400 V1.1"/>
         </targetInfos>
       </component>
       <component Cbundle="MDK-Pro" Cclass="File System" Cgroup="CORE" Cvariant="LFN" Cvendor="Keil" Cversion="6.4.0" condition="CMSIS Core with RTOS and File System I/O">

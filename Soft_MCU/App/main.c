@@ -98,6 +98,10 @@ int main(void)
     fs_init("F0:");                 osDelay(10);    /* File System Initialize: NOR or SPI Flash drive 0 */
     fs_init("M0:");                 osDelay(10);    /* File System Initialize: Memory Card drive 0      */
     fs_init("N0:");                 osDelay(10);    /* File System Initialize: NAND Flash drive 0       */
+    if( bsp_clear_key() ) {
+        fdelete("config.sys", NULL);
+        printf("[Main] System setting reset to default!\r\n");
+    }
     cfg_init("config.sys");         osDelay(10);
     PBDP_Init(cfg_get_baudrate());  osDelay(10);    /* PorfiBUS_DP Initialize                           */
     net_init();                     osDelay(10);    /* Net Initialize                                   */
